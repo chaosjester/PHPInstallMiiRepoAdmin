@@ -13,6 +13,7 @@ else if(isset($_SESSION['name'])!="")
 if(isset($_GET['logout']))
 {
  session_destroy();
+ session_unset();
  unset($_SESSION['name']);
  header("Location: index.php");
 }

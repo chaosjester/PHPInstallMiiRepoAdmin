@@ -1,50 +1,35 @@
 <?php
+session_start();
+
 require ("../reposettings.php");
 include ("includes/connection.php");
 
-// if(isset($_POST['login'])){
+if(isset($_SESSION['name'])!="")
+{
+ header("Location: admin.php");
+} 
 
-//   $email = mysqli_real_escape_string($link, $_POST['email']);
-//   $password = md5(md5($_POST['email'].$_POST['password']));
+if(isset($_POST['login']))
+{
+ $email = mysqli_real_escape_string($link, $_POST['email']);
+  $password = mysqli_real_escape_string($link, $_POST['password']);;
+ $query = "SELECT * FROM users WHERE email='$email'";
+ $row = $link->query($query);
+ $result = $row->fetch_array(MYSQLI_ASSOC);
+ if($result['password'] == password_verify($password, $result['password']))
+ {
+  $_SESSION['name'] = $result['name'];
+  session_write_close();
+  header("Location: admin.php");
+  exit();
+}
+else
+{
+  header("Location:index.php?err=".urlencode("Account details incorrect, please try again "));
+  exit();  
+}
 
-//  $query="SELECT * FROM users WHERE email='$email' AND password='$password' LIMIT 1";
-
-//  if(mysqli_num_rows($query)==1) {
-//  header("Location:admin.php");
-//   exit();
-
-
-
-
-  if(isset($_SESSION['name'])!="")
-  {
-   header("Location: index.php");
-  }
-  if(isset($_POST['login']))
-  {
-   $email = mysqli_real_escape_string($_POST['email']);
-   $password = mysqli_real_escape_string(md5(md5($_POST['email'].$_POST['password'])));
-   $query = "SELECT * FROM users WHERE email='$email'";
-   $row= $link->$query;
-   if($row['password']== $password)
-   {
-    $_SESSION['name'] = $row['name'];
-    header("Location: admin.php");
-   }
-   else
-   {
-    ?>
-          <script>alert('wrong details');</script>
-          <?php
-   }
-   
-  }
-
-
-// } else {
-//   header("Location:index.php?err=".urlencode("This account does not exist"));
-//   exit();
-// }
+}
 
 
 
@@ -84,29 +69,29 @@ include ("includes/connection.php");
           <?php if(isset($_GET['err'])){ ?>
           <div class="row">
             <div class="col s12 center-align">
-            <div class="card-panel dismissable red accent-4 white-text">
-            <?php echo $_GET['err'] ?>
-            </div>
+              <div class="card-panel dismissable red accent-4 white-text">
+                <?php echo $_GET['err'] ?>
+              </div>
             </div>
           </div>
           <?php }?>
           <?php if(isset($_GET['success'])){ ?>
           <div class="row">
             <div class="col s12 center-align">
-            <div class="card-panel dismissable green white-text">
-            <?php echo $_GET['success'] ?>
-            </div>
+              <div class="card-panel dismissable green white-text">
+                <?php echo $_GET['success'] ?>
+              </div>
             </div>
           </div>
           <?php }?>
           <form method="post">
             <div class="row">
               <div class="input-field col s12">
-                <input type="email" class="validate">
+                <input type="email" class="validate" name="email">
                 <label for="email">Email</label>
               </div>
               <div class="input-field col s12">
-                <input type="password" class="validate">
+                <input type="password" class="validate" name="password">
                 <label for="password">Password</label>
               </div>
             </div>

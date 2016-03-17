@@ -1,14 +1,15 @@
 <?php
 session_start();
+
 require ("../reposettings.php");
 include ("includes/connection.php");
 
 if(!isset($_SESSION['name']))
 {
- header("Location: index.php");
+ header("Location: index.php?err=".urlencode("Either you are not logged in or your username and/or password are incorrect. Please try again."));
+ exit();
 }
-$res=mysql_query("SELECT * FROM users WHERE name=".$_SESSION['name']);
-$userRow=mysql_fetch_array($res);
+
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +32,7 @@ $userRow=mysql_fetch_array($res);
     <a class="brand-logo center"><?php echo $reponame ?></a>
     <ul class="right hide-on-med-and-down">
       <li>Logged in as <?php echo $_SESSION['name']; ?></li>
-      <li><a href="logout.php?logout">Log Out<i class="material-icons left">input</i></a></li>
+      <li><a href="logout.php?logout">Log Out<i class="material-icons right">input</i></a></li>
     </ul>
   </div>
 </nav>

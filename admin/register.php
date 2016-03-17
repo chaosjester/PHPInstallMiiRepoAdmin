@@ -45,7 +45,7 @@ if(isset($_POST['register'])){
   else {
     $name = mysqli_real_escape_string($link , $_POST['name']);
     $email = mysqli_real_escape_string($link , $_POST['email']);
-    $password = mysqli_real_escape_string($link , md5(md5($_POST['email'].$_POST['password'])));
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     $query = "INSERT INTO users (name,email,password) VALUES('$name','$email','$password')";
 

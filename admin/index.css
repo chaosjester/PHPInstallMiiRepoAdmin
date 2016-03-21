@@ -6,8 +6,6 @@
   }
 
   main {
-  	background-image: url("3ds.png");
-    background-repeat: no-repeat;
-    background-position: center;
     flex: 1 0 auto;
   }
+

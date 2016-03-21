@@ -9,6 +9,8 @@ if(!isset($_SESSION['name']))
  header("Location: index.php?err=".urlencode("Either you are not logged in or your username and/or password are incorrect. Please try again."));
  exit();
 }
+
+$repo = scandir("../3ds");
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +23,7 @@ if(!isset($_SESSION['name']))
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Repo Admin</title>
+  <title>Generate Package Lists</title>
 </head>
 
 <body>
@@ -51,11 +53,29 @@ if(!isset($_SESSION['name']))
       <div class="col s12 m4 offset-m4 center-align">
        <div class="card-panel blue-grey lighten-3">
           </span>
-          <span class="white-text">Welcome <?php echo $_SESSION['name'];?>
+          <span class="white-text">Welcome <?php echo $_SESSION['name']; print_r($repo); ?>
           </span>
         </div>
       </div>
     </div>
+
+    <?php 
+    $query = "SELECT `name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path` FROM `packages` WHERE 1 LIMIT 0, 30 ";
+    $result = $link->query($query);
+    $rows = array();
+    while($r = mysqli_fetch_assoc($result)) {
+        $rows[] = $r;
+        $formattedjson = str_replace("\u0000","",str_replace("\/","/",$rows));
+    }
+
+    
+
+    print json_encode($formattedjson);
+    ?>
+
+    
+
+
   </div>
 </main>
   <footer class="page-footer blue-grey darken-3">

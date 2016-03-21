@@ -12,7 +12,7 @@ if(isset($_SESSION['name'])!="")
 if(isset($_POST['login']))
 {
  $email = mysqli_real_escape_string($link, $_POST['email']);
-  $password = mysqli_real_escape_string($link, $_POST['password']);;
+ $password = mysqli_real_escape_string($link, $_POST['password']);;
  $query = "SELECT * FROM users WHERE email='$email'";
  $row = $link->query($query);
  $result = $row->fetch_array(MYSQLI_ASSOC);
@@ -42,7 +42,7 @@ else
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  <link rel="stylesheet" type="text/css" href="../custom.css">
+  <link rel="stylesheet" type="text/css" href="index.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Login</title>

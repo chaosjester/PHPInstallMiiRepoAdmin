@@ -9,8 +9,6 @@ if(!isset($_SESSION['name']))
  header("Location: index.php?err=".urlencode("Either you are not logged in or your username and/or password are incorrect. Please try again."));
  exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +21,7 @@ if(!isset($_SESSION['name']))
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Packages</title>
+  <title>Update Packages</title>
 </head>
 
 <body>
@@ -51,42 +49,41 @@ if(!isset($_SESSION['name']))
     <div class="container">
       <div class="row">
         <div class="col s12 m12 center-align">
-          <table class="bordered highlight">
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Type</th>
-              <th>Version</th>
-              <th>Website</th>
-              <th>Info Path</th>
-              <th>Download Path</th>
-            </tr>
-            <?php 
+            <table class="bordered highlight">
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Version</th>
+                <th>Website</th>
+                <th>Info Path</th>
+                <th>Download Path</th>
+              </tr>
+              <?php 
 
-            $query="SELECT * FROM packages";
-            $results = $link->query($query);
+              $query="SELECT * FROM packages";
+              $results = $link->query($query);
 
-            while ($row = mysqli_fetch_array($results)) { ?>
-            <tr>
-              <td> <?php echo $row['name']; ?></td>
-              <td><?php echo $row['short_description']; ?></td>
-              <td><?php echo $row['author']; ?></td>
-              <td><?php echo $row['category']; ?></td>
-              <td><?php echo $row['type']; ?></td>
-              <td><?php echo $row['version']; ?></td>
-              <td class="truncate"><?php echo $row['website']; ?></td>
-              <td><?php echo $row['info_path']; ?></td>
-              <td><?php echo $row['dl_path']; ?></td>
-            </tr>
-
-
-            <?php }
-
-
-            ?>
-          </table>
+              while ($row = mysqli_fetch_array($results)) { ?>
+              <tr>
+                <td>
+                    <a href="modifypackagepage.php?id=<?php echo $row['id']; ?>" class="waves-effect waves-light btn">Modify</a>
+                </td>
+                <td><?php echo $row['name']; ?></td>
+                <td><?php echo $row['short_description']; ?></td>
+                <td><?php echo $row['author']; ?></td>
+                <td><?php echo $row['category']; ?></td>
+                <td><?php echo $row['type']; ?></td>
+                <td><?php echo $row['version']; ?></td>
+                <td><?php echo $row['website']; ?></td>
+                <td><?php echo $row['info_path']; ?></td>
+                <td><?php echo $row['dl_path']; ?></td>
+              </tr>
+              <?php } ?>
+            </table>
         </div>
       </div>
     </div>

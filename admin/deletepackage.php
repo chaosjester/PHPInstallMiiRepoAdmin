@@ -16,7 +16,7 @@ if(isset($_POST['delete'])){
     $checks = implode("','", $_POST['checkbox']);
     $query = "DELETE FROM `packages` WHERE `id` IN ('$checks')";
     $link->query($query);
-    $message = count($_POST['checkbox'])." Package(s) deleted";
+    $message = count($_POST['checkbox'])." Package(s) deleted<br>Redirecting back to package list in 3 seconds";
     $link->close();
   }
 
@@ -65,64 +65,36 @@ if(isset($_POST['delete'])){
         <div class="col s12 m12 center-align">
           <?php if(isset($_POST['delete'])){ ?>
           <div class="row">
-          <div class="col s12 m6 offset-m3">
+            <div class="col s12 m6 offset-m3">
               <div class="card-panel green">
                 <span class="white-text"><?php echo $message; ?>
                 </span>
               </div>
             </div>
           </div>
-          <?php } ?>
-          <form method="post">
-            <table class="bordered highlight">
-              <tr>
-                <th>Delete?</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Version</th>
-                <th>Website</th>
-                <th>Info Path</th>
-                <th>Download Path</th>
-              </tr>
+          <?php header( "refresh:3;url=viewpackage.php" );} ?>
+          <div class="col s12 m6 offset-m3">
+            <ul class="collection">
+
               <?php 
 
               $query="SELECT * FROM packages";
               $results = $link->query($query);
 
               while ($row = mysqli_fetch_array($results)) { ?>
-              <tr>
-                <td>
-                  <p>
-                    <input type="checkbox" name="checkbox[]" value="<?php echo $row['id']?>" id="<?php echo $row['id']?>" />
-                    <label for="<?php echo $row['id']?>"></label>
-                  </p>
-                </td>
-                <td> <?php echo $row['name']; ?></td>
-                <td><?php echo $row['short_description']; ?></td>
-                <td><?php echo $row['author']; ?></td>
-                <td><?php echo $row['category']; ?></td>
-                <td><?php echo $row['type']; ?></td>
-                <td><?php echo $row['version']; ?></td>
-                <td class="truncate"><?php echo $row['website']; ?></td>
-                <td><?php echo $row['info_path']; ?></td>
-                <td><?php echo $row['dl_path']; ?></td>
-              </tr>
+              <li class="collection-item"><p>
+                <input class="left" type="checkbox" name="checkbox[]" value="<?php echo $row['id']?>" id="<?php echo $row['id']?>" />
+                <label for="<?php echo $row['id']?>"><?php echo $row['name']; ?></label></li>
 
+                <?php } ?>
 
-              <?php }
+              </ul>
+              <button class="btn waves-effect waves-light" type="submit" name="delete">Delete Packages
+                <i class="material-icons right">not_interested</i>
+              </button>
+            </div>
 
-
-              ?>
-            </table>
-            <br>
-            <button class="btn waves-effect waves-light" type="submit" name="delete">Delete Packages
-              <i class="material-icons right">not_interested</i>
-            </button>
           </form>
-
         </div>
       </div>
     </div>

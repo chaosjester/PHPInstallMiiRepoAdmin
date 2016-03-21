@@ -49,7 +49,7 @@ if(!isset($_SESSION['name']))
   <div class="container">
     <div class="row">
       <div class="col s12 m4 offset-m4 center-align">
-       <div class="card-panel blue-grey lighten-3">
+       <div class="card-panel black">
           </span>
           <span class="white-text">Welcome <?php echo $_SESSION['name'];?>
           </span>

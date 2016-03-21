@@ -17,7 +17,7 @@ if(isset($_POST['addpackage'])) {
   $author = mysqli_real_escape_string($link, $_POST['author']);
   $category = mysqli_real_escape_string($link, $_POST['category']);
   $website = mysqli_real_escape_string($link, $_POST['website']);
-  $type = "3ds";
+  $type = mysqli_real_escape_string($link, "3ds");
   $version = mysqli_real_escape_string($link, $_POST['version']);
   $dl_path = mysqli_real_escape_string($link, $_POST['dl_path']);
   $info_path = mysqli_real_escape_string($link, $_POST['info_path']);

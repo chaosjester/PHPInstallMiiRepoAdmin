@@ -1,4 +1,4 @@
-# PHPInstallMiiRepoAdmi
+# PHPInstallMiiRepoAdmin
 
 This is a PHP admin tool to compile several files required by the InstallMii 3DS Homebrew app.
 
@@ -28,6 +28,8 @@ Apache
 PHP >= 5.5 - This is due to password mangement, there is no exceptions to this
 
 PHP MUST run as your user, not a service account unless that account has permissions to the folders
+
+MySQL 
 
 Directories must be writable
 

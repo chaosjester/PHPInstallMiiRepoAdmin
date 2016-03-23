@@ -15,10 +15,12 @@ The index has a download link to the repo.list, the package.list and packages.js
 Requirements:
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-!!!!!! Homebrew apps MUST be in a folder named 3ds under the repo root directory !!!!!!
-!!!!!! For example, if your repo is http://repo.example.com/ apps must be in     !!!!!!
-!!!!!! http://repo.example.com/3ds or if in http://example.com/repo the 3ds      !!!!!!
-!!!!!! directory must be in http://example.com/repo/3ds                          !!!!!!
+
+Homebrew apps MUST be in a folder named 3ds under the repo root directory
+For example, if your repo is http://repo.example.com/ apps must be in
+http://repo.example.com/3ds or if in http://example.com/repo the 3ds
+directory must be in http://example.com/repo/3ds
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Apache

@@ -25,6 +25,8 @@ Apache
 
 PHP >= 5.5 - This is due to password mangement, there is no exceptions to this
 
+PHP MUST run as your user, not a service account unless that account has permissions to the folders
+
 Directories must be writable
 
 An smdh file should be present in the homebrew application folder or some manual configuration is required

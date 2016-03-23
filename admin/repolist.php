@@ -11,9 +11,8 @@ if(!isset($_SESSION['name']))
   exit();
 }
 
-$result = $link->query("SELECT COUNT(*) FROM `packages`");
-$row = $result->fetch_row();
-
+$repofile = '{"repos":[{"name":"'.$reponame.'","url":"'.$repourl.'"}]}';
+file_put_contents('../repo.list', $repofile);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +25,7 @@ $row = $result->fetch_row();
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Repo Admin</title>
+  <title>Manage Repo List</title>
 </head>
 
 <body>
@@ -57,13 +56,7 @@ $row = $result->fetch_row();
       <div class="col s12 m10 offset-m1 center-align">
           <div class="card blue-grey darken-1">
            <div class="card-content white-text">
-             <span class="card-title">Welcome <?php echo $_SESSION['name'];?></span>
-             <p>Welcome to your InstallMii Repo Admin page.<br>You currently have <?php echo $row[0]; ?> Package(s) configured.</p>
-           </div>
-           <div class="card-action">
-             <a href="viewpackage.php">View Packages</a>
-             <a href="generatejson.php">Generate Repo Files</a>
-           </div>
+            <p>More functions coming soon<br>For now every time you hit this page, a new repo.list will be generated</p>
          </div>
        </div>
      </div>

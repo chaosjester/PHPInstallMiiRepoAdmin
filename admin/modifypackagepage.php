@@ -6,7 +6,8 @@ include ("includes/connection.php");
 
 if(!isset($_SESSION['name']))
 {
- header("Location: index.php?err=".urlencode("Either you are not logged in or your username and/or password are incorrect. Please try again."));
+  $_SESSION['error'] = "Either you are not logged in or your username and/or password are incorrect. Please try again.";
+ header("Location: index.php");
  exit();
 }
 
@@ -75,6 +76,7 @@ if(mysql_errno()){
           <li><a href="viewpackage.php" class="active">View Packages</a></li>
           <li><a href="addcustom.php">Add Custom Package</a></li>
           <li><a href="deletepackage.php">Delete Packages</a></li>
+          <li><a href="repolist.php">Manage Repo List</a></li>
           <li><a href="generatejson.php">Generate Package Lists</a></li>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
@@ -86,6 +88,7 @@ if(mysql_errno()){
     <div class="container">
       <div class="row">
         <div class="col s12 m12 center-align">
+
           <?php if(isset($_POST['modifypackage'])){ ?>
           <div class="row">
           <div class="col s12 m6 offset-m3">
@@ -98,24 +101,26 @@ if(mysql_errno()){
           <?php header( "refresh:3;url=viewpackage.php" ); } ?>
           <form method="post">
         <?php 
+        
 
               $query="SELECT * FROM packages WHERE `id`='$packageid'";
               $results = $link->query($query);
 
               while ($row = mysqli_fetch_array($results)) { ?>
-              <div class="input-field col s6">
-                <input name="name" type="text" value="<?php echo $row['name']; ?>" onfocus="if(this.value=='<?php echo $row['name']; ?>') this.value='';">
+
+              <div class="input-field col s12 m6">
+                <input name="name" type="text" value="<?php echo $row['name']; ?>" onfocus="if(this.value=='<?php echo $row['name']; ?>') this.value='<?php echo $row['name']; ?>';">
                 <label for="name">Package Name</label>
               </div>
-              <div class="input-field col s6">
-                <input name="desc" type="text" value="<?php echo $row['short_description']; ?>" onfocus="if(this.value=='<?php echo $row['short_description']; ?>') this.value='';">
+              <div class="input-field col s12 m6">
+                <input name="desc" type="text" value="<?php echo $row['short_description']; ?>" onfocus="if(this.value=='<?php echo $row['short_description']; ?>') this.value='<?php echo $row['short_description']; ?>';">
                 <label for="desc">*Package Description</label>
               </div>
-              <div class="input-field col s6">
-                <input name="author" type="text" value="<?php echo $row['author']; ?>" onfocus="if(this.value=='<?php echo $row['author']; ?>') this.value='';">
+              <div class="input-field col s12 m6">
+                <input name="author" type="text" value="<?php echo $row['author']; ?>" onfocus="if(this.value=='<?php echo $row['author']; ?>') this.value='<?php echo $row['author']; ?>';">
                 <label for="author">Package Author</label>
               </div>
-              <div class="input-field col s6">
+              <div class="input-field col s12 m6">
                 <select name="category">
                   <option value="Games">Games</option>
                   <option value="Application">Applications</option>
@@ -123,20 +128,20 @@ if(mysql_errno()){
                 </select>
                 <label for="category">Package Category</label>
               </div>
-              <div class="input-field col s6">
-                <input name="website" type="text" value="<?php echo $row['website']; ?>" onfocus="if(this.value=='<?php echo $row['website']; ?>') this.value='';">
+              <div class="input-field col s12 m6">
+                <input name="website" type="text" value="<?php echo $row['website']; ?>" onfocus="if(this.value=='<?php echo $row['website']; ?>') this.value='<?php echo $row['website']; ?>';">
                 <label for="website">Website</label>
               </div>
-              <div class="input-field col s6">
-                <input name="version" type="text" value="<?php echo $row['version']; ?>" onfocus="if(this.value=='<?php echo $row['version']; ?>') this.value='';">
+              <div class="input-field col s12 m6">
+                <input name="version" type="text" value="<?php echo $row['version']; ?>" onfocus="if(this.value=='<?php echo $row['version']; ?>') this.value='<?php echo $row['version']; ?>';">
                 <label for="version">Package Version</label>
               </div>
-              <div class="input-field col s6">
-                <input name="dl_path" type="text" value="<?php echo $row['dl_path']; ?>" onfocus="if(this.value=='<?php echo $row['dl_path']; ?>') this.value='';">
-                <label class="tooltipped" for="dl_path" data-position="top" data-delay="50" data-tooltip="Usually 3ds/packagename">Download Path <i class="tiny material-icons">info_outline</i></label>
+              <div class="input-field col s12 m6">
+                <input name="dl_path" type="text" value="<?php echo $row['dl_path']; ?>" onfocus="if(this.value=='<?php echo $row['dl_path']; ?>') this.value='<?php echo $row['dl_path']; ?>';">
+                <label class="tooltipped" for="dl_path" data-position="top" data-delay="50" data-tooltip="Usually 3ds/packagename/">Download Path <i class="tiny material-icons">info_outline</i></label>
               </div>
-              <div class="input-field col s6">
-                <input name="info_path" type="text" value="<?php echo $row['info_path']; ?>" onfocus="if(this.value=='<?php echo $row['info_path']; ?>') this.value='';">
+              <div class="input-field col s12 m6">
+                <input name="info_path" type="text" value="<?php echo $row['info_path']; ?>" onfocus="if(this.value=='<?php echo $row['info_path']; ?>') this.value='<?php echo $row['info_path']; ?>';">
                 <label class="tooltipped" for="info_path" data-position="top" data-delay="50" data-tooltip="Usually 3ds/packagename/packagefile.smdh">SMDH Path <i class="tiny material-icons">info_outline</i></label>
               </div>
               <button class="btn waves-effect waves-light" type="submit" name="modifypackage">Save Changes

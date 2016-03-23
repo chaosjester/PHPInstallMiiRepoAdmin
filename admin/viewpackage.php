@@ -6,7 +6,8 @@ include ("includes/connection.php");
 
 if(!isset($_SESSION['name']))
 {
- header("Location: index.php?err=".urlencode("Either you are not logged in or your username and/or password are incorrect. Please try again."));
+  $_SESSION['error'] = "Either you are not logged in or your username and/or password are incorrect. Please try again.";
+ header("Location: index.php");
  exit();
 }
 ?>
@@ -38,6 +39,7 @@ if(!isset($_SESSION['name']))
           <li><a href="viewpackage.php" class="active">View Packages</a></li>
           <li><a href="addcustom.php">Add Custom Package</a></li>
           <li><a href="deletepackage.php">Delete Packages</a></li>
+          <li><a href="repolist.php">Manage Repo List</a></li>
           <li><a href="generatejson.php">Generate Package Lists</a></li>
         </ul>
         <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
@@ -46,10 +48,9 @@ if(!isset($_SESSION['name']))
   </header>     
   <main>
     <br>
-    <div class="container">
-      <div class="row">
-        <div class="col s12 m12 center-align">
-            <table class="bordered highlight">
+
+
+            <table class="responsive-table striped bordered">
               <tr>
                 <th></th>
                 <th>Name</th>
@@ -59,8 +60,8 @@ if(!isset($_SESSION['name']))
                 <th>Type</th>
                 <th>Version</th>
                 <th>Website</th>
-                <th>Info Path</th>
                 <th>Download Path</th>
+                <th>Info Path</th>
               </tr>
               <?php 
 
@@ -79,14 +80,12 @@ if(!isset($_SESSION['name']))
                 <td><?php echo $row['type']; ?></td>
                 <td><?php echo $row['version']; ?></td>
                 <td><?php echo $row['website']; ?></td>
-                <td><?php echo $row['info_path']; ?></td>
                 <td><?php echo $row['dl_path']; ?></td>
+                <td><?php echo $row['info_path']; ?></td>
               </tr>
               <?php } ?>
             </table>
-        </div>
-      </div>
-    </div>
+
   </main>
   <footer class="page-footer blue-grey darken-3">
     <div class="container ">

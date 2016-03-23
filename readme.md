@@ -1,37 +1,52 @@
-# PHPInstallMiiRepo
+# PHPInstallMiiRepoAdmi
 
-This is a PHP front end to compile several files required by the InstallMii 3DS Homebrew app.
+This is a PHP admin tool to compile several files required by the InstallMii 3DS Homebrew app.
 
 You can get InstallMii here - https://gbatemp.net/threads/wip-installmii-graphical-repository-downloader.406097/
 
-This script will create your repo.list, package.list and scrape information from .smdh files to create the packages.json.
+This tool will create your repo.list, package.list and scrape information from .smdh files to create the packages.json.
 
-This script relies on there being an smdh file present in your homebrew application folders.  If one does not exist, there are tools to create one. If there is no smdh file, it will not be added.  Packages added manually will be removed when the script is run again.
+While it is preferable to have an SMDH file available for scraping, this tool will still add an entry if none exists.
+
+Packages can be modified once imported.
 
 The index has a download link to the repo.list, the package.list and packages.json files are all for the backend.
 
 Requirements:
 
-Homebrew apps MUST be in a folder named 3ds under the reporoot directory
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!! Homebrew apps MUST be in a folder named 3ds under the repo root directory !!!!!!
+!!!!!! For example, if your repo is http://repo.example.com/ apps must be in     !!!!!!
+!!!!!! http://repo.example.com/3ds or if in http://example.com/repo the 3ds      !!!!!!
+!!!!!! directory must be in http://example.com/repo/3ds                          !!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Apache
 
-suPHP. phpfcgi or other system that will execute the PHP as your account (may be required by shared host users)
+PHP >= 5.5 - This is due to password mangement, there is no exceptions to this
 
 Directories must be writable
 
-All of the homebrew apps should be located in "<location of repoupdate.php>/3ds/". They will not be picked up otherwise
-
-An smdh file must be present in the homebrew application folder or this will not pick it up
+An smdh file should be present in the homebrew application folder or some manual configuration is required
 
 Instructions:
 
-Modify the reposettings.php file to your liking
+Download latest release
+
+Create SQL database on your server, along with a user that has access to create tables and modify tables
+
+Unzip, edit /reposettings.php and /admin/includes/connection.php
 
 Upload to webhost
 
-Go to http://yourrepo.com/repoupdate.php to kick off the update
+Go to http://yourrepo.com/admin/register.php and click the "Create Tables" button to create the database tables
 
-Profit
+On the register page, create your admin account
 
-If you want to automate this, you can set up a cron job (*nix) or schedulated task (Windows) "php /path/to/repoupdate.php" with your desired times
+Head back to http://yourrepo.com/admin and ensure you can log in
+
+Create additional admin accounts if required, otherwise it is advised to delete the register.php file
+
+Once in, the interface is pretty straight forward.
+
+

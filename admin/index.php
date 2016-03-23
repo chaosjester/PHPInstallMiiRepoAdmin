@@ -25,7 +25,8 @@ if(isset($_POST['login']))
 }
 else
 {
-  header("Location:index.php?err=".urlencode("Account details incorrect, please try again "));
+  $_SESSION['error'] = "Account details incorrect, please try again";
+  header("Location:index.php");
   exit();  
 }
 
@@ -66,11 +67,11 @@ else
         <div class="col s12 m6 offset-m3 center-align">
           <h3>Admin Log in</h3>
           <hr>
-          <?php if(isset($_GET['err'])){ ?>
+          <?php if(isset($_SESSION['error'])){ ?>
           <div class="row">
             <div class="col s12 center-align">
               <div class="card-panel dismissable red accent-4 white-text">
-                <?php echo $_GET['err'] ?>
+                <?php echo $_SESSION['error'] ?>
               </div>
             </div>
           </div>

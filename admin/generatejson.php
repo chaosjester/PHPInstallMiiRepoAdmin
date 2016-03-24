@@ -117,10 +117,10 @@ if(isset($_POST['pacakgelist'])) {
       $row = mysqli_fetch_array($result,MYSQLI_NUM);
 
       if ($row[0] >= 1) {
-        
-     $message = $message."Package ".$name." already exists and has not been changed<br>";
 
-      }  else { 
+       $message = $message."Package ".$name." already exists and has not been changed<br>";
+
+     }  else { 
 
       $updatedb = "INSERT INTO packages (`name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path`) VALUES ('$name','$desc','$author','$category','$website','$type','$version','$dlp','$infop')";
 
@@ -128,11 +128,11 @@ if(isset($_POST['pacakgelist'])) {
       $message = $message."Package ".$name." added<br>";
 
 
-           } 
+    } 
 
   }
-    $message = $message."<br>If the package name is blank, there is no SMDH file present.<br>A Dummy entry has been created.<br>Check the View Packages page for more details";
-  }
+  $message = $message."<br>If the package name is blank, there is no SMDH file present.<br>A Dummy entry has been created.<br>Check the View Packages page for more details";
+}
 if (isset($_POST['generatejson'])){
 
   $repoInfo = array();
@@ -144,113 +144,147 @@ if (isset($_POST['generatejson'])){
   $result = $link->query($query);
   $temp = array();
   while($row = $result->fetch_assoc()) {
-      $temp[] = $row;
+    $temp[] = $row;
   }
   $json = json_encode(array("repo"=>$repoInfo, "packages"=>$temp), JSON_UNESCAPED_SLASHES);
-   file_put_contents('../packages.json', $json);
+  file_put_contents('../packages.json', $json);
 
-   $message = "JSON File created";
+  $message = "packages.json File created";
 }
 ?>
 
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-    <link rel="stylesheet" type="text/css" href="custom.css">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Generate Package Lists</title>
-  </head>
+<!DOCTYPE html>
+<html>
+<head>
+  <!--Import Google Icon Font-->
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <link rel="stylesheet" type="text/css" href="custom.css">
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generate Package Lists</title>
+</head>
 
-  <body>
-    <header>
-      <nav>
-        <div class="nav-wrapper blue-grey darken-4">
-          <a class="brand-logo center"><?php echo $reponame ?></a>
-          <ul class="right hide-on-med-and-down">
-            <li><div class="chip"><?php echo $_SESSION['name']; ?></div></li>
-            <li><a href="logout.php?logout">Log Out<i class="material-icons right">input</i></a></li>
-          </ul>
-          <ul id="slide-out" class="side-nav fixed">
-            <li><a href="admin.php">Home</a></li>
-            <li><a href="viewpackage.php">View Packages</a></li>
-            <li><a href="addcustom.php">Add Custom Package</a></li>
-            <li><a href="deletepackage.php">Delete Packages</a></li>
-            <li><a href="repolist.php">Manage Repo List</a></li>
-            <li><a href="generatejson.php">Generate Package Lists</a></li>
-          </ul>
-          <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-        </div>
-      </nav>
-    </header>     
-    <main>
-      <br>
-      <div class="container">
-        <div class="row">
-            <form method="post">
-            <div class="col s12 m4 offset-m4 center-align">
-              <button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list
-                <i class="material-icons right">send</i>
-              </button>
+<body>
+  <header>
+    <nav>
+      <div class="nav-wrapper blue-grey darken-4">
+        <a class="brand-logo center"><?php echo $reponame ?></a>
+        <ul class="right hide-on-med-and-down">
+          <li><div class="chip"><?php echo $_SESSION['name']; ?></div></li>
+          <li><a href="logout.php?logout">Log Out<i class="material-icons right">input</i></a></li>
+        </ul>
+        <ul id="slide-out" class="side-nav fixed">
+          <li class="bold"><a href="admin.php" class="waves-effect waves-teal active">Home</a></li>
+          <li class="no-padding">
+           <ul class="collapsible collapsible-accordion">
+             <li>
+               <a class="collapsible-header waves-effect waves-teal">Packages</a>
+               <div class="collapsible-body">
+                 <ul>
+                  <li><a href="viewpackage.php">View Packages</a></li>
+                  <li><a href="addcustom.php">Add Custom Package</a></li>
+                  <li><a href="deletepackage.php">Delete Packages</a></li>
+                </ul>
               </div>
-              <br><br>
-              <div class="col s12 m4 offset-m4 center-align">
-              <button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files
-                <i class="material-icons right">send</i>
-              </button>
-              </div>
-              <br><br>
-              <div class="col s12 m4 offset-m4 center-align">
-              <button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate packages.json
-                <i class="material-icons right">send</i>
-              </button>
-          </div>
-          </form>
-        </div>
-      </div>
-      <br>
-      <div class="container">
-        <?php if(isset($message)){ ?>
-        <div class="row">
-          <div class="col s12 m10 offset-m1 center-align">
-            <div class="card-panel green">
-              <span class="white-text"><?php echo $message; ?>
-              </span>
+            </li>
+          </ul>
+        </li>
+        <li class="no-padding">
+         <ul class="collapsible collapsible-accordion">
+           <li>
+             <a class="collapsible-header waves-effect waves-teal">Repo Settings</a>
+             <div class="collapsible-body">
+               <ul>
+                <li><a href="repolist.php">Manage Repo List</a></li>
+                <li><a href="addrepo.php">Add Repo</a></li>
+                <li><a href="deleterepo.php">Delete Repo</a></li>
+              </ul>
             </div>
+          </li>
+        </ul>
+      </li>
+      <li class="active"><a href="generatejson.php">Generate Package Lists</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+  </div>
+</nav>
+  </header>     
+  <main>
+    <br>
+    <div class="container">
+    <div class="row">
+      <div class="col s12 m10 offset-m1 center-align">
+        <h2>Generate Required Repo Files</h2>
+        <p>This process will need to be done when any packages are updated or added to your repo</p>
+      </div>
+    </div>
+      <div class="row">
+        <form method="post">
+          <div class="col s12 m4 center-align">
+            <h3>Step 1</h3>
+            <p>Click the button below to scan and create the package.list file for all packages</p>
+            <button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+          <div class="col s12 m4 center-align">
+            <h3>Step 2</h3>
+            <p>Click the button below to scan for any SMDH files and scrape information</p>
+            <button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+          <div class="col s12 m4 center-align">
+            <h3>Step 3</h3>
+            <p>Click the button below to generate the packages.json file, it is recommended to do this after Step 1 and 2</p>
+            <button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate packages.json
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <br>
+    <div class="container">
+      <?php if(isset($message)){ ?>
+      <div class="row">
+        <div class="col s12 m10 offset-m1 center-align">
+          <div class="card-panel green">
+            <span class="white-text"><?php echo $message; ?>
+            </span>
           </div>
         </div>
-        <?php ;} ?>
+      </div>
+      <?php ;} ?>
+    </div>
+  </div>
+</main>
+<footer class="page-footer blue-grey darken-3">
+  <div class="container ">
+    <div class="row ">
+      <div class="col l6 s12 ">
+        <h5 class="white-text">Repo Provided by <?php echo $repoowner ?></h5>
+        <p class="grey-text text-lighten-4"><?php echo $repoblurb ?></p>
+        <p class="grey-text text-lighten-3">PHPInstallMiiRepo by ChaosJester and LiquidFenrir</p>
       </div>
     </div>
-  </main>
-  <footer class="page-footer blue-grey darken-3">
-    <div class="container ">
-      <div class="row ">
-        <div class="col l6 s12 ">
-          <h5 class="white-text">Repo Provided by <?php echo $repoowner ?></h5>
-          <p class="grey-text text-lighten-4"><?php echo $repoblurb ?></p>
-          <p class="grey-text text-lighten-3">PHPInstallMiiRepo by ChaosJester and LiquidFenrir</p>
-        </div>
-      </div>
+  </div>
+  <div class="footer-copyright blue-grey darken-2">
+    <div class="container">
+        Created with PHP InstallMii Repo Admin.
+        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
     </div>
-    <div class="footer-copyright blue-grey darken-2">
-      <div class="container">
-        Created with PHP InstallMii Repo creator.
-        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepo" target="_blank">Project GitHub page</a>
-      </div>
-    </div>
-  </footer>
+  </div>
+</footer>
 
 
 
-  <!--Import jQuery before materialize.js-->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-  <script src="custom.js"></script>
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+<script src="custom.js"></script>
 </body>
 </html>

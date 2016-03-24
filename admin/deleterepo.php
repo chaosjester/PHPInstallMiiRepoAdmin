@@ -15,9 +15,9 @@ if(isset($_POST['delete'])){
 
   if(!empty($_POST['checkbox'])){
     $checks = implode("','", $_POST['checkbox']);
-    $query = "DELETE FROM `packages` WHERE `id` IN ('$checks')";
+    $query = "DELETE FROM `repos` WHERE `id` IN ('$checks')";
     $link->query($query);
-    $message = count($_POST['checkbox'])." Package(s) deleted<br>Redirecting back to package list in 3 seconds";
+    $message = count($_POST['checkbox'])." Repo(s) deleted<br>Redirecting back to repo list in 3 seconds";
     $link->close();
   }
 
@@ -36,7 +36,7 @@ if(isset($_POST['delete'])){
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Delete Packages</title>
+  <title>Delete Repo</title>
 </head>
 
 <body>
@@ -58,7 +58,7 @@ if(isset($_POST['delete'])){
                  <ul>
                   <li><a href="viewpackage.php">View Packages</a></li>
                   <li><a href="addcustom.php">Add Custom Package</a></li>
-                  <li class="active"><a href="deletepackage.php">Delete Packages</a></li>
+                  <li><a href="deletepackage.php">Delete Packages</a></li>
                 </ul>
               </div>
             </li>
@@ -72,7 +72,7 @@ if(isset($_POST['delete'])){
                <ul>
                 <li><a href="repolist.php">Manage Repo List</a></li>
                 <li><a href="addrepo.php">Add Repo</a></li>
-                <li><a href="deleterepo.php">Delete Repo</a></li>
+                <li class="active"><a href="deleterepo.php">Delete Repo</a></li>
               </ul>
             </div>
           </li>
@@ -98,14 +98,14 @@ if(isset($_POST['delete'])){
               </div>
             </div>
           </div>
-          <?php header( "refresh:3;url=viewpackage.php" ); } ?>
+          <?php header( "refresh:3;url=repolist.php" ); } ?>
           <form method="post">
             <div class="col s12 m6 offset-m3<?php if(isset($_POST['delete'])){ echo " hide"; } ?>">
               <ul class="collection">
 
                 <?php 
 
-                $query="SELECT * FROM packages";
+                $query="SELECT * FROM repos";
                 $results = $link->query($query);
 
                 while ($row = mysqli_fetch_array($results)) { ?>
@@ -116,7 +116,7 @@ if(isset($_POST['delete'])){
 
                   <?php } ?>
                 </ul>
-                <button class="btn waves-effect waves-light<?php if(isset($_POST['delete'])){ echo " hide"; } ?>" type="submit" name="delete">Delete Packages
+                <button class="btn waves-effect waves-light<?php if(isset($_POST['delete'])){ echo " hide"; } ?>" type="submit" name="delete">Delete Repos
                   <i class="material-icons right">not_interested</i>
                 </button>
               </div>

@@ -1,8 +1,13 @@
 <?php
 session_start();
 
+if (!file_exists("./includes/connection.php")){
+  header('Location:./admin/install');
+  } else {
+
 require ("../reposettings.php");
 include ("includes/connection.php");
+}
 
 if(isset($_SESSION['name'])!="")
 {
@@ -55,7 +60,6 @@ else
       <div class="nav-wrapper blue-grey darken-4">
         <a class="brand-logo center"><?php echo $reponame ?></a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="../admin/register.php"><i class="material-icons right">perm_identity</i>Register</a></li>
           <li><a href="../admin/"><i class="material-icons right">view_module</i>Admin Login</a></li>
         </ul>
       </div>
@@ -122,8 +126,8 @@ else
     </div>
     <div class="footer-copyright blue-grey darken-2">
       <div class="container">
-        Created with PHP InstallMii Repo creator.
-        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepo" target="_blank">Project GitHub page</a>
+        Created with PHP InstallMii Repo Admin.
+        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
       </div>
     </div>
   </footer>

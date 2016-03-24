@@ -1,8 +1,13 @@
 <?php
 session_start();
 
+if (!file_exists("./includes/connection.php")){
+  header('Location:./install');
+  } else {
+
 require ("../reposettings.php");
 include ("includes/connection.php");
+}
 
 if(!isset($_SESSION['name']))
 {
@@ -39,37 +44,93 @@ $row = $result->fetch_row();
           <li><a href="logout.php?logout">Log Out<i class="material-icons right">input</i></a></li>
         </ul>
         <ul id="slide-out" class="side-nav fixed">
-          <li><a href="admin.php">Home</a></li>
-          <li><a href="viewpackage.php">View Packages</a></li>
-          <li><a href="addcustom.php">Add Custom Package</a></li>
-          <li><a href="deletepackage.php">Delete Packages</a></li>
-          <li><a href="repolist.php">Manage Repo List</a></li>
-          <li><a href="generatejson.php">Generate Package Lists</a></li>
+          <li class="bold"><a href="admin.php" class="waves-effect waves-teal active">Home</a></li>
+          <li class="no-padding">
+           <ul class="collapsible collapsible-accordion">
+             <li>
+               <a class="collapsible-header waves-effect waves-teal">Packages</a>
+               <div class="collapsible-body">
+                 <ul>
+                  <li><a href="viewpackage.php">View Packages</a></li>
+                  <li><a href="addcustom.php">Add Custom Package</a></li>
+                  <li><a href="deletepackage.php">Delete Packages</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="no-padding">
+         <ul class="collapsible collapsible-accordion">
+           <li>
+             <a class="collapsible-header waves-effect waves-teal">Repo Settings</a>
+             <div class="collapsible-body">
+               <ul>
+                <li><a href="repolist.php">Manage Repo List</a></li>
+                <li><a href="addrepo.php">Add Repo</a></li>
+                <li><a href="deleterepo.php">Delete Repo</a></li>
+              </ul>
+            </div>
+          </li>
         </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-      </div>
-    </nav>
-  </header>     
-  <main>
-    <br>
-    <div class="container">
-      <div class="row">
+      </li>
+      <li><a href="generatejson.php">Generate Package Lists</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+  </div>
+</nav>
+</header>     
+<main>
+  <br>
+  <div class="container">
+    <div class="row">
       <div class="col s12 m10 offset-m1 center-align">
-          <div class="card blue-grey darken-1">
-           <div class="card-content white-text">
-             <span class="card-title">Welcome <?php echo $_SESSION['name'];?></span>
-             <p>Welcome to your InstallMii Repo Admin page.<br>You currently have <?php echo $row[0]; ?> Package(s) configured.</p>
-           </div>
-           <div class="card-action">
-             <a href="viewpackage.php">View Packages</a>
-             <a href="generatejson.php">Generate Repo Files</a>
-           </div>
+        <?php if(file_exists("../admin/install/index.php")){ ?>
+        <div class="row">
+          <div class="col s12 center-align">
+            <div class="card-panel dismissable orange white-text">
+              <i class="large material-icons">report_problem</i><h3>WARNING!</h3>
+              <p>Instalation files still exist<br>if you want to add more admin accounts, do so now and remove the /admin/install directory<br>This message will dissapear when the files have been deleted</p>
+            </div>
+          </div>
+        </div>
+        <?php }?>
+        <?php if(!file_exists("../repo.list")){ ?>
+        <div class="row">
+          <div class="col s12 center-align">
+            <div class="card-panel dismissable orange white-text">
+              <i class="large material-icons">report_problem</i><h3>WARNING!</h3>
+              <p>You have not generated a repo.list file<br>Please proceed to the "Manage Repo List" page to create one.</p>
+              <a href="repolist.php" class="btn waves-effect waves-light">Manage Repo List</a>
+            </div>
+          </div>
+        </div>
+        <?php }?>
+        <?php if(!file_exists("../packages.json")){ ?>
+        <div class="row">
+          <div class="col s12 center-align">
+            <div class="card-panel dismissable orange white-text">
+              <i class="large material-icons">report_problem</i><h3>WARNING!</h3>
+              <p>You have not generated a packages.json file<br>Please proceed to the "Generate Package Lists" page to create one.</p>
+              <a href="generatejson.php" class="btn waves-effect waves-light">Generate Package Lists</a>
+            </div>
+          </div>
+        </div>
+        <?php }?>
+        <div class="card blue-grey darken-1">
+         <div class="card-content white-text">
+           <span class="card-title">Welcome <?php echo $_SESSION['name'];?></span>
+           <p>Welcome to your InstallMii Repo Admin page.<br>You currently have <?php echo $row[0]; ?> Package(s) configured.</p>
+         </div>
+         <div class="card-action">
+           <a href="viewpackage.php">View Packages</a>
+           <a href="generatejson.php">Generate Repo Files</a>
          </div>
        </div>
      </div>
    </div>
- </main>
- <footer class="page-footer blue-grey darken-3">
+ </div>
+</main>
+<footer class="page-footer blue-grey darken-3">
   <div class="container ">
     <div class="row ">
       <div class="col l6 s12 ">
@@ -81,8 +142,8 @@ $row = $result->fetch_row();
   </div>
   <div class="footer-copyright blue-grey darken-2">
     <div class="container">
-      Created with PHP InstallMii Repo creator.
-      <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepo" target="_blank">Project GitHub page</a>
+        Created with PHP InstallMii Repo Admin.
+        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
     </div>
   </div>
 </footer>

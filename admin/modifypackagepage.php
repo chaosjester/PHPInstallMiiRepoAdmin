@@ -72,16 +72,40 @@ if(mysql_errno()){
           <li><a href="logout.php?logout">Log Out<i class="material-icons right">input</i></a></li>
         </ul>
         <ul id="slide-out" class="side-nav fixed">
-          <li><a href="admin.php">Home</a></li>
-          <li><a href="viewpackage.php" class="active">View Packages</a></li>
-          <li><a href="addcustom.php">Add Custom Package</a></li>
-          <li><a href="deletepackage.php">Delete Packages</a></li>
-          <li><a href="repolist.php">Manage Repo List</a></li>
-          <li><a href="generatejson.php">Generate Package Lists</a></li>
+          <li class="bold"><a href="admin.php" class="waves-effect waves-teal">Home</a></li>
+          <li class="no-padding">
+           <ul class="collapsible collapsible-accordion">
+             <li>
+               <a class="collapsible-header waves-effect waves-teal">Packages</a>
+               <div class="collapsible-body">
+                 <ul>
+                  <li><a href="viewpackage.php">View Packages</a></li>
+                  <li><a href="addcustom.php">Add Custom Package</a></li>
+                  <li><a href="deletepackage.php">Delete Packages</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li class="no-padding">
+         <ul class="collapsible collapsible-accordion">
+           <li>
+             <a class="collapsible-header waves-effect waves-teal">Repo Settings</a>
+             <div class="collapsible-body">
+               <ul>
+                <li><a href="repolist.php">Manage Repo List</a></li>
+                <li><a href="addrepo.php">Add Repo</a></li>
+                <li><a href="deleterepo.php">Delete Repo</a></li>
+              </ul>
+            </div>
+          </li>
         </ul>
-        <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-      </div>
-    </nav>
+      </li>
+      <li><a href="generatejson.php">Generate Package Lists</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+  </div>
+</nav>
   </header>     
   <main>
     <br>
@@ -166,8 +190,8 @@ if(mysql_errno()){
     </div>
     <div class="footer-copyright blue-grey darken-2">
       <div class="container">
-        Created with PHP InstallMii Repo creator.
-        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepo" target="_blank">Project GitHub page</a>
+        Created with PHP InstallMii Repo Admin.
+        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
       </div>
     </div>
   </footer>

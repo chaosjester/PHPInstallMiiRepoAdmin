@@ -10,6 +10,37 @@ if(!isset($_SESSION['name']))
  header("Location: index.php");
  exit();
 }
+
+if(isset($_GET['id'])){
+  $packageid = $_GET['id'];
+}
+
+if(isset($_POST['modifyrepo'])) {
+
+
+  $id = mysqli_real_escape_string($link, $packageid);
+  $name = mysqli_real_escape_string($link, $_POST['name']);
+  $url = mysqli_real_escape_string($link, $_POST['url']);
+ 
+
+  $query = "UPDATE repos SET name='$name', url='$url'
+  WHERE `id`='$id'";
+
+$link->query($query);
+
+if(mysql_errno()){
+    $error =  "MySQL error ".mysql_errno().": "
+         .mysql_error()."\n<br>When executing <br>\n$query\n<br>";
+} else {
+
+  $message = "Repo Modified successfully<br>Redirecting back to Repo list in 3 seconds";
+  $link->close();
+  }
+
+
+} 
+
+
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +53,7 @@ if(!isset($_SESSION['name']))
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>View Packages</title>
+  <title>Modigy Repo List</title>
 </head>
 
 <body>
@@ -42,7 +73,7 @@ if(!isset($_SESSION['name']))
                <a class="collapsible-header waves-effect waves-teal">Packages</a>
                <div class="collapsible-body">
                  <ul>
-                  <li class="active"><a href="viewpackage.php">View Packages</a></li>
+                  <li><a href="viewpackage.php">View Packages</a></li>
                   <li><a href="addcustom.php">Add Custom Package</a></li>
                   <li><a href="deletepackage.php">Delete Packages</a></li>
                 </ul>
@@ -72,44 +103,46 @@ if(!isset($_SESSION['name']))
   </header>     
   <main>
     <br>
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m12 center-align">
 
+          <?php if(isset($_POST['modifyrepo'])){ ?>
+          <div class="row">
+          <div class="col s12 m6 offset-m3">
+              <div class="card-panel green">
+                <span class="white-text"><?php echo $message; ?>
+                </span>
+              </div>
+            </div>
+          </div>
+          <?php header( "refresh:3;url=repolist.php" ); } ?>
+          <form method="post">
+        <?php 
+        
 
-            <table class="responsive-table striped bordered">
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Version</th>
-                <th>Website</th>
-                <th>Download Path</th>
-                <th>Info Path</th>
-              </tr>
-              <?php 
-
-              $query="SELECT * FROM packages";
+              $query="SELECT * FROM repos WHERE `id`='$packageid'";
               $results = $link->query($query);
 
               while ($row = mysqli_fetch_array($results)) { ?>
-              <tr>
-                <td>
-                    <a href="modifypackagepage.php?id=<?php echo $row['id']; ?>" class="waves-effect waves-light btn">Modify</a>
-                </td>
-                <td><?php echo $row['name']; ?></td>
-                <td><?php echo $row['short_description']; ?></td>
-                <td><?php echo $row['author']; ?></td>
-                <td><?php echo $row['category']; ?></td>
-                <td><?php echo $row['type']; ?></td>
-                <td><?php echo $row['version']; ?></td>
-                <td><?php echo $row['website']; ?></td>
-                <td><?php echo $row['dl_path']; ?></td>
-                <td><?php echo $row['info_path']; ?></td>
-              </tr>
-              <?php } ?>
-            </table>
 
+              <div class="input-field col s12 m6">
+                <input name="name" type="text" value="<?php echo $row['name']; ?>" onfocus="if(this.value=='<?php echo $row['name']; ?>') this.value='<?php echo $row['name']; ?>';">
+                <label for="name">Repo Name</label>
+              </div>
+              <div class="input-field col s12 m6">
+                <input name="url" type="text" value="<?php echo $row['url']; ?>" onfocus="if(this.value=='<?php echo $row['url']; ?>') this.value='<?php echo $row['url']; ?>';">
+                <label for="url">Repo URL</label>
+              </div>
+              <button class="btn waves-effect waves-light" type="submit" name="modifyrepo">Save Changes
+                <i class="material-icons left">done</i>
+              </button>
+              <?php } ?>
+          </form>
+
+        </div>
+      </div>
+    </div>
   </main>
   <footer class="page-footer blue-grey darken-3">
     <div class="container ">

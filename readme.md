@@ -12,7 +12,7 @@ Packages can be modified once imported.
 
 The index has a download link to the repo.list, the package.list and packages.json files are all for the backend.
 
-Requirements:
+# Requirements:
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -35,7 +35,7 @@ Directories must be writable
 
 An smdh file should be present in the homebrew application folder or some manual configuration is required
 
-Instructions:
+# Instructions:
 
 Download latest release
 

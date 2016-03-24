@@ -128,7 +128,7 @@ if ($link->query($query) === TRUE) {
               </div>
             </div>
           </div>
-          <?php header( "refresh:3;url=viewpackage.php" ); } ?>
+          <?php } ?>
           <form method="post">
         <?php 
         

@@ -39,19 +39,17 @@ Instructions:
 
 Download latest release
 
-Create SQL database on your server, along with a user that has access to create tables and modify tables
-
-Unzip, edit /reposettings.php and /admin/includes/connection.php
+You might need to create SQL database on your server, along with a user that has access to create tables and modify tables, though the installer may create them for you
 
 Upload to webhost
 
-Go to http://yourrepo.com/admin/register.php and click the "Create Tables" button to create the database tables
+Go to http://yourrepo.com/, you will be directed to the install page
 
-On the register page, create your admin account
+On the install page, follow the directions to create the database and user
 
 Head back to http://yourrepo.com/admin and ensure you can log in
 
-Create additional admin accounts if required, otherwise it is advised to delete the register.php file
+Create additional admin accounts if required, otherwise it is advised to delete the /admin/install directory
 
 Once in, the interface is pretty straight forward.
 

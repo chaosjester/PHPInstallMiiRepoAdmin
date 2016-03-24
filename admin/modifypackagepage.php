@@ -32,17 +32,13 @@ if(isset($_POST['modifypackage'])) {
   $query = "UPDATE packages SET name='$name', short_description='$desc', author='$author', category='$category', website='$website', type='$type', version='$version', dl_path='$dl_path', info_path='$info_path'
   WHERE `id`='$id'";
 
-$link->query($query);
-
-if(mysql_errno()){
-    $error =  "MySQL error ".mysql_errno().": "
-         .mysql_error()."\n<br>When executing <br>\n$query\n<br>";
-} else {
-
-  $message = "Package Modified successfully<br>Redirecting back to package list in 3 seconds";
+if ($link->query($query) === TRUE) {
+    $message = "Package Modified successfully<br>Redirecting back to package list in 3 seconds";
   $link->close();
-  }
-
+} else {
+  $error = 'Error updating package<br>'. $link->error.'<br><br>';
+  
+}
 
 } 
 
@@ -118,6 +114,16 @@ if(mysql_errno()){
           <div class="col s12 m6 offset-m3">
               <div class="card-panel green">
                 <span class="white-text"><?php echo $message; ?>
+                </span>
+              </div>
+            </div>
+          </div>
+          <?php header( "refresh:3;url=viewpackage.php" ); } ?>
+          <?php if(isset($error)){ ?>
+          <div class="row">
+          <div class="col s12 m6 offset-m3">
+              <div class="card-panel red">
+                <span class="white-text"><?php echo $error; ?>
                 </span>
               </div>
             </div>

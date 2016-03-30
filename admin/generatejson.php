@@ -96,20 +96,19 @@ if(isset($_POST['pacakgelist'])) {
     for ($i;$i <= sizeof($apps)-1;$i++) { // scrape the SMDH files
       $list[$i] = array();
       $file = file_get_contents("../".$info_path[$i]);
-      $name = $list[$i][$fields[0]] = substr($file,8,80); //reading the parts with the name, desc and author in the smdh
+      $name = $list[$i][$fields[0]] = substr($file,8,80);
       $desc = $list[$i][$fields[1]] = substr($file,136,200);
-      $author = $list[$i][$fields[2]] = substr($file,392,80);
-      // those null parts are where the master.list idea can be better than using php to read the smdh, but I don't think there's a zone for version in a smdh
-      $category = $list[$i][$fields[3]] = "na";
-      $website = $list[$i][$fields[4]] = "na";
-      $type = $list[$i][$fields[5]] = "3ds"; // to make installMii install in the sd:/3ds/ folder
-      $version = $list[$i][$fields[6]] = "na";
-      $dlp = $list[$i][$fields[7]] = $dl_path[$i];
-      $infop = $list[$i][$fields[8]] = $info_path[$i];
+      $author = $list[$i][$fields[2]] = substr($file,392,80); // no more scraping, until dev's start using the SMDH file spec properly!
+      $category = $list[$i][$fields[3]] = mysqli_real_escape_string($link, "na");
+      $website = $list[$i][$fields[4]] = mysqli_real_escape_string($link, "na");
+      $type = $list[$i][$fields[5]] = mysqli_real_escape_string($link, "3ds"); // to make installMii install in the sd:/3ds/ folder
+      $version = $list[$i][$fields[6]] = mysqli_real_escape_string($link, "na");
+      $dlp = $list[$i][$fields[7]] = mysqli_real_escape_string($link, $dl_path[$i]);
+      $infop = $list[$i][$fields[8]] = mysqli_real_escape_string($link, $info_path[$i]);
 
-      $name = str_replace("\0", "",$name);
-      $desc = str_replace("\0", "",$desc);
-      $author = str_replace("\0", "",$author);
+      $name = mysqli_real_escape_string($link, str_replace("\0", "",$name));
+      $desc = mysqli_real_escape_string($link, str_replace("\0", "",$desc));
+      $author = mysqli_real_escape_string($link, str_replace("\0", "",$author));
 
       $query = "SELECT * FROM `packages` WHERE dl_path='$dlp'";
       $result = $link->query($query);
@@ -119,122 +118,124 @@ if(isset($_POST['pacakgelist'])) {
 
         $warning = $warning."Package ".$name." already exists and has not been changed<br>";
 
-     }  else { 
+      }  else { 
 
-      $updatedb = "INSERT INTO packages (`name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path`) VALUES ('$name','$desc','$author','$category','$website','$type','$version','$dlp','$infop')";
+        $updatedb = "INSERT INTO packages (`name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path`) VALUES ('$name','$desc','$author','$category','$website','$type','$version','$dlp','$infop')";
 
-      $link->query($updatedb);
-      $message = $message."Package ".$name." added<br>";
+        $link->query($updatedb);
+        $message = $message."Package ".$name." added<br>";
 
 
-    } 
-
-  }
-
-  $query = "SELECT * FROM packages WHERE 1";
-  $result = $link->query($query);
-  
-
-  while($row = $result->fetch_assoc()) {
-
-    $dlpath = $row['dl_path'];
-
-    if (!file_exists('../'.$dlpath)) {
-
-      $query = "DELETE FROM packages WHERE dl_path='$dlpath'";
-
-      $link->query($query);
-
-      $deleted =  $deleted."Package ".$row['name']." Deleted<br>";
+      } 
 
     }
+
+    $query = "SELECT * FROM packages WHERE 1";
+    $result = $link->query($query);
+
+
+    while($row = $result->fetch_assoc()) {
+
+      $dlpath = $row['dl_path'];
+
+      if (!file_exists('../'.$dlpath)) {
+
+        $query = "DELETE FROM packages WHERE dl_path='$dlpath'";
+
+        $link->query($query);
+
+        $deleted =  $deleted."Package ".$row['name']." Deleted<br>";
+
+      }
+    }
+    if (isset($message)){
+
+      $message = $message."<br>If the package name is blank, there is no SMDH file present or it did not contain any information.<br>A Dummy entry has been created.<br>Check the View Packages page for more details";
+    }
   }
+  if (isset($_POST['generatejson'])){
 
-  $message = $message."<br>If the package name is blank, there is no SMDH file present.<br>A Dummy entry has been created.<br>Check the View Packages page for more details";
-}
-if (isset($_POST['generatejson'])){
+    $repoInfo = array();
+    $repoInfo["name"] = $reponame;
+    $repoInfo["author"] = $repoowner;
+    $repoInfo["website"] = $repourl;
 
-  $repoInfo = array();
-  $repoInfo["name"] = $reponame;
-  $repoInfo["author"] = $repoowner;
-  $repoInfo["website"] = $repourl;
+    $query = "SELECT `name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path` FROM `packages` WHERE 1";
+    $result = $link->query($query);
+    $temp = array();
+    while($row = $result->fetch_assoc()) {
+      $temp[] = $row;
+    }
+    $json = json_encode(array("repo"=>$repoInfo, "packages"=>$temp), JSON_UNESCAPED_SLASHES);
+    file_put_contents('../packages.json', $json);
 
-  $query = "SELECT `name`, `short_description`, `author`, `category`, `website`, `type`, `version`, `dl_path`, `info_path` FROM `packages` WHERE 1";
-  $result = $link->query($query);
-  $temp = array();
-  while($row = $result->fetch_assoc()) {
-    $temp[] = $row;
+    $message = "packages.json File created";
   }
-  $json = json_encode(array("repo"=>$repoInfo, "packages"=>$temp), JSON_UNESCAPED_SLASHES);
-  file_put_contents('../packages.json', $json);
+  ?>
 
-  $message = "packages.json File created";
-}
-?>
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="custom.css">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Generate Package Lists</title>
+  </head>
 
-<!DOCTYPE html>
-<html>
-<head>
-  <!--Import Google Icon Font-->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!--Import materialize.css-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-  <link rel="stylesheet" type="text/css" href="custom.css">
-  <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Generate Package Lists</title>
-</head>
-
-<body>
-  <?php include('header.php'); ?>   
-  <main>
-    <br>
-    <div class="container">
-      <div class="row">
-        <div class="col s12 m10 offset-m1 center-align">
-          <h2>Generate Required Repo Files</h2>
-          <p>This process will need to be done when any packages are updated, added or deleted from your repo</p>
-        </div>
-      </div>
-      <div class="row">
-        <form method="post">
+  <body>
+    <?php include('header.php'); ?>   
+    <main>
+      <br>
+      <div class="container">
+        <div class="row">
           <div class="col s12 m10 offset-m1 center-align">
-           <ul class="collection">
-             <li class="collection-item">Step 1: Scan and create package.list files<br><button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list</button></li>
-             <li class="collection-item">Step 2: Scan for any SMDH files and scrape information and remove any packages that have been deleted<br><button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files</button></li>
-             <li class="collection-item">Step 3: Generate Package.JSON file<br><button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate JSON</button></li>
-           </ul>
-         </div>
-       </form>
-     </div>
-   </div>
-   <br>
-   <div class="container">
-   <?php if(isset($deleted)){ ?>
-   <div class="row">
-     <div class="col s12 m10 offset-m1 center-align">
-       <div class="card-panel red lighten-1">
-         <span class="white-text"><?php echo $deleted; ?>
-         </span>
+            <h2>Generate Required Repo Files</h2>
+            <p>This process will need to be done when any packages are updated, added or deleted from your repo</p>
+          </div>
+        </div>
+        <div class="row">
+          <form method="post">
+            <div class="col s12 m10 offset-m1 center-align">
+             <ul class="collection">
+               <li class="collection-item">Step 1: Scan and create package.list files<br><button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list</button></li>
+               <li class="collection-item">Step 2: Scan for any SMDH files and scrape information and remove any packages that have been deleted<br><button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files</button></li>
+               <li class="collection-item">Step 3: Generate Package.JSON file<br><button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate JSON</button></li>
+             </ul>
+           </div>
+         </form>
        </div>
      </div>
-   </div>
-   <?php ;} ?>
-    <?php if(isset($warning)){ ?>
-    <div class="row">
+     <br>
+     <div class="container">
+      <?php if(isset($deleted)){ ?>
+      <div class="row">
+       <div class="col s12 m10 offset-m1 center-align">
+         <div class="card-panel red lighten-1">
+           <span class="white-text"><?php echo $deleted; ?>
+           </span>
+         </div>
+       </div>
+     </div>
+     <?php ;} ?>
+     <?php if(isset($message)){ ?>
+     <div class="row">
+       <div class="col s12 m10 offset-m1 center-align">
+         <div class="card-panel green">
+           <span class="white-text"><?php echo $message; ?>
+           </span>
+         </div>
+       </div>
+     </div>
+     <?php ;} ?>
+     <?php if(isset($warning)){ ?>
+     <div class="row">
       <div class="col s12 m10 offset-m1 center-align">
         <div class="card-panel orange">
           <span class="white-text"><?php echo $warning; ?>
-          </span>
-        </div>
-      </div>
-    </div>
-    <?php ;} ?>
-    <?php if(isset($message)){ ?>
-    <div class="row">
-      <div class="col s12 m10 offset-m1 center-align">
-        <div class="card-panel green">
-          <span class="white-text"><?php echo $message; ?>
           </span>
         </div>
       </div>

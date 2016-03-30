@@ -16,7 +16,6 @@
                <div class="collapsible-body">
                  <ul>
                   <li><a href="viewpackage.php">View Packages</a></li>
-                  <li><a href="addcustom.php">Add Custom Package</a></li>
                   <li><a href="deletepackage.php">Delete Packages</a></li>
                 </ul>
               </div>

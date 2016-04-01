@@ -109,7 +109,6 @@ if(isset($_POST['pacakgelist'])) {
       $name = mysqli_real_escape_string($link, str_replace("\0", "",$name));
       $desc = mysqli_real_escape_string($link, str_replace("\0", "",$desc));
       $author = mysqli_real_escape_string($link, str_replace("\0", "",$author));
-      $icon = mysqli_real_escape_string($link, $icon);
 
       $query = "SELECT * FROM `packages` WHERE dl_path='$dlp'";
       $result = $link->query($query);

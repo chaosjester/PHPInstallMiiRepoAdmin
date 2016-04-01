@@ -109,6 +109,7 @@ if(isset($_POST['pacakgelist'])) {
       $name = mysqli_real_escape_string($link, str_replace("\0", "",$name));
       $desc = mysqli_real_escape_string($link, str_replace("\0", "",$desc));
       $author = mysqli_real_escape_string($link, str_replace("\0", "",$author));
+      $icon = mysqli_real_escape_string($link, $icon);
 
       $query = "SELECT * FROM `packages` WHERE dl_path='$dlp'";
       $result = $link->query($query);
@@ -197,52 +198,103 @@ if(isset($_POST['pacakgelist'])) {
             <p>This process will need to be done when any packages are updated, added or deleted from your repo</p>
           </div>
         </div>
+        <div class="container">
+          <div class="row">
+            <div class="col s12">
+              <ul class="tabs">
+                <li class="tab col s12 m6"><a class="text-white" href="#step1">Step 1</a></li>
+                <li class="tab col s12 m6"><a class="text-white" href="#step2">Step 2</a></li>
+                <li class="tab col s12 m6"><a class="text-white" href="#step3">Step 3</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <form method="post" action="generatejson.php#step1">
+          <div id="step1">
+            <div class="row">
+              <div class="col s12 m6 offset-m3 center-align">
+                <div class="card">
+                  <div class="card-content black-text">
+                    <span class="card-title">Step 1</span>
+                    <p>Scan and create package.list files</p>
+                  </div>
+                  <div class="card-action">
+                  <button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+          <form method="post" action="generatejson.php#step2">
+          <div id="step2">
+            <div class="row">
+              <div class="col s12 m6 offset-m3 center-align">
+                <div class="card">
+                  <div class="card-content black-text">
+                    <span class="card-title">Step 2</span>
+                    <p>Scan for any SMDH files and scrape information and remove any packages that have been deleted</p>
+                  </div>
+                  <div class="card-action">
+                  <button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+          <form method="post" action="generatejson.php#step3">
+          <div id="step3">
+            <div class="row">
+              <div class="col s12 m6 offset-m3 center-align">
+                <div class="card">
+                  <div class="card-content black-text">
+                    <span class="card-title">Step 3</span>
+                    <p>Generate Package.JSON file</p>
+                  </div>
+                  <div class="card-action">
+                  <button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate JSON</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <br>
+      <div class="container">
+        <?php if(isset($deleted)){ ?>
         <div class="row">
-          <form method="post">
-            <div class="col s12 m10 offset-m1 center-align">
-             <ul class="collection">
-               <li class="collection-item">Step 1: Scan and create package.list files<br><button class="btn waves-effect waves-light" type="submit" name="pacakgelist">Create package.list</button></li>
-               <li class="collection-item">Step 2: Scan for any SMDH files and scrape information and remove any packages that have been deleted<br><button class="btn waves-effect waves-light" type="submit" name="scansmdh">Scan SMDH Files</button></li>
-               <li class="collection-item">Step 3: Generate Package.JSON file<br><button class="btn waves-effect waves-light" type="submit" name="generatejson">Generate JSON</button></li>
-             </ul>
+         <div class="col s12 m10 offset-m1 center-align">
+           <div class="card-panel red lighten-1">
+             <span class="white-text"><?php echo $deleted; ?>
+             </span>
            </div>
-         </form>
-       </div>
-     </div>
-     <br>
-     <div class="container">
-      <?php if(isset($deleted)){ ?>
-      <div class="row">
-       <div class="col s12 m10 offset-m1 center-align">
-         <div class="card-panel red lighten-1">
-           <span class="white-text"><?php echo $deleted; ?>
-           </span>
          </div>
        </div>
-     </div>
-     <?php ;} ?>
-     <?php if(isset($message)){ ?>
-     <div class="row">
-       <div class="col s12 m10 offset-m1 center-align">
-         <div class="card-panel green">
-           <span class="white-text"><?php echo $message; ?>
-           </span>
+       <?php ;} ?>
+       <?php if(isset($message)){ ?>
+       <div class="row">
+         <div class="col s12 m10 offset-m1 center-align">
+           <div class="card-panel green">
+             <span class="white-text"><?php echo $message; ?>
+             </span>
+           </div>
          </div>
        </div>
-     </div>
-     <?php ;} ?>
-     <?php if(isset($warning)){ ?>
-     <div class="row">
-      <div class="col s12 m10 offset-m1 center-align">
-        <div class="card-panel orange">
-          <span class="white-text"><?php echo $warning; ?>
-          </span>
+       <?php ;} ?>
+       <?php if(isset($warning)){ ?>
+       <div class="row">
+        <div class="col s12 m10 offset-m1 center-align">
+          <div class="card-panel orange">
+            <span class="white-text"><?php echo $warning; ?>
+            </span>
+          </div>
         </div>
       </div>
+      <?php ;} ?>
     </div>
-    <?php ;} ?>
   </div>
-</div>
 </main>
 <footer class="page-footer blue-grey darken-3">
   <div class="container ">

@@ -7,32 +7,19 @@ include ("includes/connection.php");
 if(!isset($_SESSION['name']))
 {
   $_SESSION['error'] = "Either you are not logged in or your username and/or password are incorrect. Please try again.";
- header("Location: index.php");
- exit();
+  header("Location: index.php");
+  exit();
 }
 
-if(isset($_POST['addrepo'])) {
-
-  $name = mysqli_real_escape_string($link, $_POST['name']);
-  $url = mysqli_real_escape_string($link, $_POST['url']);
-
-
-  $query = "INSERT INTO repos (`name`, `url`)
-  VALUES ('$name','$url')";
-
- $link->query($query);
-
-if(mysql_errno()){
-    $error =  "MySQL error ".mysql_errno().": "
-         .mysql_error()."\n<br>When executing <br>\n$query\n<br>";
+if (!file_exists("../packages.json")) {
+  $error = "Packages.JSON not found, have you created it yet?";
 } else {
 
-  $message = "Package added successfully<br>Redirecting to Repo List in 3 seconds";
-  $link->close();
-  }
+  $json = file_get_contents("../packages.json");
+  $data = json_decode($json);
+}
 
 
-} 
 
 ?>
 
@@ -46,43 +33,57 @@ if(mysql_errno()){
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Add Repo</title>
+  <title>View Packages.JSON</title>
 </head>
 
 <body>
-<?php include('header.php'); ?>    
+  <?php include('header.php'); ?>     
   <main>
     <br>
     <div class="container">
       <div class="row">
         <div class="col s12 m10 offset-m1 center-align">
-        <h3>Add Repo</h3>
           <?php if(isset($message)) { ?>
           <div class="card-panel col s6 m10 offset-m1 green white-text">
             <p><?php echo $message; ?></p>
           </div>
-          <?php header( "refresh:3;url=repolist.php" ); } ?>
+          <?php } ?>
           <?php if(isset($error)) { ?>
           <div class="card-panel col s6 m10 offset-m1 red white-text">
             <p><?php echo $error; ?></p>
           </div>
           <?php } ?>
-          <form method="post">
-            <div class="input-field col s12 m6">
-              <input required name="name" type="text">
-              <label for="name">Repo Name</label>
-            </div>
-            <div class="input-field col s12 m6">
-              <input required name="url" type="text">
-              <label for="url">Repo URL</label>
-            </div>
-           <button class="btn waves-effect waves-light" type="submit" name="addrepo">Add Repo
-              <i class="material-icons right">save</i>
-            </button>
-          </form>
         </div>
       </div>
     </div>
+    <?php if (isset($data)){ ?>
+    <table class="responsive-table striped bordered">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Version</th>
+        <th>Website</th>
+        <th>Download Path</th>
+        <th>Info Path</th>        
+      </tr>
+      <?php foreach ($data->packages as $package){?>
+      <tr>
+        <td><?php echo $package->{name}; ?></td>
+        <td><?php echo $package->{'short_description'}; ?></td>
+        <td><?php echo $package->{'author'}; ?></td>
+        <td><?php echo $package->{'category'}; ?></td>
+        <td><?php echo $package->{'type'}; ?></td>
+        <td><?php echo $package->{'version'}; ?></td>
+        <td><?php echo $package->{'website'}; ?></td>
+        <td><?php echo $package->{'dl_path'}; ?></td>
+        <td><?php echo $package->{'info_path'}; ?></td>
+      </tr>
+      <?php } ?>
+    </table>
+    <?php } ?>
   </main>
 <?php include("footer.php");?>
 

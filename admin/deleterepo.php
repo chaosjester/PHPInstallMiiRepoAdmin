@@ -74,7 +74,7 @@ if(isset($_POST['delete'])){
                   <?php } ?>
                 </ul>
                 <button class="btn waves-effect waves-light<?php if(isset($_POST['delete'])){ echo " hide"; } ?>" type="submit" name="delete">Delete Repos
-                  <i class="material-icons right">not_interested</i>
+                  <i class="material-icons right">delete_forever</i>
                 </button>
               </div>
 
@@ -83,23 +83,7 @@ if(isset($_POST['delete'])){
         </div>
       </div>
     </main>
-    <footer class="page-footer blue-grey darken-3">
-      <div class="container ">
-        <div class="row ">
-          <div class="col l6 s12 ">
-            <h5 class="white-text">Repo Provided by <?php echo $repoowner ?></h5>
-            <p class="grey-text text-lighten-4"><?php echo $repoblurb ?></p>
-            <p class="grey-text text-lighten-3">PHPInstallMiiRepo by ChaosJester and LiquidFenrir</p>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright blue-grey darken-2">
-        <div class="container">
-        Created with PHP InstallMii Repo Admin.
-        <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
-        </div>
-      </div>
-    </footer>
+<?php include("footer.php");?>
 
 
 

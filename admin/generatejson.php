@@ -110,6 +110,7 @@ if(isset($_POST['pacakgelist'])) {
       $desc = mysqli_real_escape_string($link, str_replace("\0", "",$desc));
       $author = mysqli_real_escape_string($link, str_replace("\0", "",$author));
 
+
       $query = "SELECT * FROM `packages` WHERE dl_path='$dlp'";
       $result = $link->query($query);
       $row = mysqli_fetch_array($result,MYSQLI_NUM);
@@ -295,23 +296,7 @@ if(isset($_POST['pacakgelist'])) {
     </div>
   </div>
 </main>
-<footer class="page-footer blue-grey darken-3">
-  <div class="container ">
-    <div class="row ">
-      <div class="col l6 s12 ">
-        <h5 class="white-text">Repo Provided by <?php echo $repoowner ?></h5>
-        <p class="grey-text text-lighten-4"><?php echo $repoblurb ?></p>
-        <p class="grey-text text-lighten-3">PHPInstallMiiRepo by ChaosJester and LiquidFenrir</p>
-      </div>
-    </div>
-  </div>
-  <div class="footer-copyright blue-grey darken-2">
-    <div class="container">
-      Created with PHP InstallMii Repo Admin.
-      <a class="grey-text text-lighten-4 right" href="https://github.com/chaosjester/PHPInstallMiiRepoAdmin" target="_blank">Project GitHub page</a>
-    </div>
-  </div>
-</footer>
+<?php include("footer.php");?>
 
 
 

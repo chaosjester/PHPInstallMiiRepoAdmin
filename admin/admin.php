@@ -34,7 +34,20 @@ $row = $result->fetch_row();
 </head>
 
 <body>
-  <?php include('header.php'); ?>
+
+
+<?php
+
+require_once './Mobile_Detect.php';
+$detect = new Mobile_Detect;
+
+$_SESSION['devtype'] = ($detect->isNintendo());
+
+ if ($_SESSION['devtype'] == TRUE){
+  include('3dshead.php'); 
+} else {
+
+  include('header.php'); } ?>
    
 <main>
   <br>

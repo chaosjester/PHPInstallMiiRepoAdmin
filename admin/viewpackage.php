@@ -36,7 +36,11 @@ if (!file_exists("../packages.json")) {
 </head>
 
 <body>
-  <?php include('header.php'); ?>   
+<?php  if ($_SESSION['devtype'] == TRUE){
+  include('3dshead.php'); 
+} else {
+
+  include('header.php'); } ?>    
   <main>
     <br>
     <div class="container">

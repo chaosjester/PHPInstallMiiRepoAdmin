@@ -36,17 +36,18 @@ if(isset($_POST['delete'])){
   <link rel="stylesheet" type="text/css" href="custom.css">
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
   <title>Delete Packages</title>
 </head>
 
 <body>
-  <?php include('header.php'); ?>   
+  <?php include('header.php'); ?>
   <main>
     <br>
     <div class="container">
       <?php if(isset($_POST['delete'])){ ?>
       <div class="row">
-        <div class="col s12 m12 center-align"> 
+        <div class="col s12 m12 center-align">
           <div class="row">
             <div class="col s12 m6 offset-m3">
               <div class="card-panel green">
@@ -62,7 +63,7 @@ if(isset($_POST['delete'])){
         <div class="container<?php if(isset($_POST['delete'])){ echo " hide"; } ?>">
           <div class="row">
 
-            <?php 
+            <?php
 
             $query="SELECT * FROM packages";
             $results = $link->query($query);

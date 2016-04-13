@@ -12,6 +12,8 @@ Packages can be modified once imported.
 
 The index has a download link to the repo.list, the package.list and packages.json files are all for the backend.
 
+For SQLite version visit https://github.com/chaosjester/InstallMiiRepoAdmin/releases
+
 # Requirements:
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -28,39 +28,14 @@ if (file_exists("./admin/includes/connection.php")) {
 
 <body>
 	<header>
-
-	<nav>
-	  <div class="nav-wrapper blue-grey darken-4">
-	    <a href="#!" class="brand-logo center"><?php echo $reponame ?></a>
-	    <a href="#" data-activates="sidemenu" class="button-collapse"><i class="material-icons">menu</i></a>
-	    <ul class="right hide-on-med-and-down">
-	    <li><a href="admin/"><i class="material-icons right">view_module</i>Admin Login</a></li>
-	    </ul>
-	    <ul class="side-nav" id="sidemenu">
-	    <li><a href="admin/"><i class="material-icons right">view_module</i>Admin Login</a></li>
-	    </ul>
-	  </div>
-	</nav>
-	        
-
-
-
-
-
-
-
-	<!-- 	<nav>
+		<nav>
 			<div class="nav-wrapper blue-grey darken-4">
 				<a class="brand-logo center"><?php echo $reponame ?></a>
 				<ul class="right hide-on-med-and-down">
 					<li><a href="admin/"><i class="material-icons right">view_module</i>Admin Login</a></li>
 				</ul>
-				<ul id="slide-out" class="side-nav fixed hide-on-large-only">
-					<li><a href="admin/"><i class="material-icons right">view_module</i>Admin Login</a></li>
-				</ul>
-				<a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
 			</div>
-		</nav> -->
+		</nav>
 	</header>
 	<main>
 		<div class="parallax-container">
@@ -114,8 +89,8 @@ if (file_exists("./admin/includes/connection.php")) {
 		</footer>
 		<!--Import jQuery before materialize.js-->
 		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="custom.js"></script>
 		<!-- Compiled and minified JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-		<script type="text/javascript" src="custom.js"></script>
 	</body>
 	</html>
